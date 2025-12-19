@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: campus_market_backend
+    ports:
+      - "8000:80"  # 將本機的 8000 Port 對應到容器內的 80 Port
+    depends_on:
+      - db         # 確保資料庫先啟動
+    env_file:
+      - .env       # 自動讀取專案根目錄下的 .env 檔案傳入容器
+    environment:
+      # 請將下方資訊改為您自己的資料庫連線資訊
+      # 格式: mysql+pymysql://帳號:密碼@IP或網址:3306/資料庫名稱
+      # - DATABASE_URL=mysql+pymysql://admin:您的RDS密碼@您的RDS端點.region.rds.amazonaws.com:3306/campus_market
+      # 強制覆蓋 .env 裡的設定，讓它連線到 Docker 內部的 db 容器
+      - DATABASE_URL=mysql+pymysql://campus_user:campus_pass@db/campus_market
+    volumes:
+      - ./app:/code/app # 將本機的 app 資料夾同步到容器內
+    command: uvicorn app.main:app --host 0.0.0.0 --port 80 --reload # 啟用自動重新載入模式
+    restart: always
+
+  db:
+    image: mysql:8.0
+    container_name: campus_market_db
+    ports:
+      - "3306:3306" # 讓你也可以用電腦上的資料庫軟體連進去看
+    environment:
+      MYSQL_DATABASE: campus_market
+      MYSQL_USER: campus_user
+      MYSQL_PASSWORD: campus_pass
+      MYSQL_ROOT_PASSWORD: root_pass
+    volumes:
+      - db_data:/var/lib/mysql # 確保資料庫重開後資料還在
+    restart: always
+
+volumes:
+  db_data:

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人中心 - 校園二手拍</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white mb-4 fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">校園二手拍</a>
+            <div class="d-flex">
+                <a href="/" class="btn btn-outline-secondary">回首頁</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4 main-content" style="margin-top: 80px;">
+        <div class="row">
+            <!-- 左側：個人資料卡片 -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; font-size: 32px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                            </svg>
+                        </div>
+                        <h4 class="card-title mb-1 d-flex justify-content-center align-items-center">
+                            <span id="profile-nickname">載入中...</span>
+                            <button class="btn btn-sm btn-outline-secondary ms-2 rounded-circle" onclick="openEditProfileModal()" title="修改暱稱">✏️</button>
+                        </h4>
+                        <p class="text-muted mb-3" id="profile-email">...</p>
+                        <div class="border-top pt-3 text-start">
+                            <p class="mb-1"><strong>使用者 ID:</strong> <span id="profile-id"></span></p>
+                            <p class="mb-0"><strong>註冊身分:</strong> 一般會員</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右側：我的商品列表 -->
+            <div class="col-md-8">
+                <h3 class="mb-4 border-bottom pb-2">我刊登的商品</h3>
+                <div id="my-items-container" class="row">
+                    <!-- 商品會動態插入這裡 -->
+                    <p class="text-center text-muted mt-5">載入中...</p>
+                </div>
+
+                <!-- 個人頁面分頁控制 -->
+                <div id="profile-pagination-container" class="mt-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer text-center">
+        <div class="container">
+            <h5 class="fw-bold mb-2">校園二手交易平台</h5>
+            <p class="text-muted small mb-3">連結校園情感，傳遞物品價值</p>
+            <div class="d-flex justify-content-center gap-3 small">
+                <a href="#" class="text-decoration-none text-secondary">關於我們</a>
+                <a href="#" class="text-decoration-none text-secondary">使用條款</a>
+                <a href="#" class="text-decoration-none text-secondary">聯絡客服</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 刊登 Modal (共用) -->
+    <div class="modal fade" id="postModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">刊登商品</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <input type="text" id="postTitle" class="form-control mb-2" placeholder="商品名稱">
+                    <input type="number" id="postPrice" class="form-control mb-2" placeholder="價格">
+                    <select id="postCategory" class="form-select mb-2">
+                        <option value="書籍">書籍</option>
+                        <option value="3C">3C</option>
+                        <option value="生活用品">生活用品</option>
+                        <option value="其他">其他</option>
+                    </select>
+                    <textarea id="postDesc" class="form-control mb-2" placeholder="描述"></textarea>
+                    <input type="file" id="postFile" class="form-control mb-2" accept="image/*">
+                    <button class="btn btn-warning w-100" onclick="postItem()">刊登</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 修改個人資料 Modal -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">修改個人資料</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <label class="form-label">暱稱</label>
+                    <input type="text" id="editNickname" class="form-control mb-3">
+                    <button class="btn btn-primary w-100" onclick="submitEditProfile()">儲存變更</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/script.js"></script>
+    <script>
+        // 頁面載入時執行
+        document.addEventListener("DOMContentLoaded", () => {
+            loadProfile();
+        });
+    </script>
+</body>
+</html>

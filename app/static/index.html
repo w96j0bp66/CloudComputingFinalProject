@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校園二手交易平台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4 fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">校園二手拍</a>
+            <div class="d-flex">
+                <div id="guest-nav">
+                    <button class="btn btn-outline-primary me-2" onclick="showModal('loginModal')">登入</button>
+                    <button class="btn btn-outline-light" onclick="showModal('registerModal')">註冊</button>
+                </div>
+                <div id="user-nav" class="auth-section">
+                    <span class="me-2 text-white-50 small">Hi,</span><a href="/static/profile.html" class="btn btn-outline-light border-2 fw-bold me-3 rounded-pill px-3" id="user-email" title="管理我的商品"></a>
+                    <button class="btn btn-outline-primary me-2 position-relative" onclick="openChatList()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots-fill me-1" viewBox="0 0 16 16">
+                            <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                        </svg> 我的聊天
+                        <span id="chat-notification-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;"></span>
+                    </button>
+                    <button class="btn btn-warning me-2" onclick="showModal('postModal')">我要刊登</button>
+                    <button class="btn btn-outline-secondary" onclick="logout()">登出</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4 main-content" style="margin-top: 70px;">
+        <!-- Hero Banner -->
+        <div class="hero-banner">
+            <h1 class="display-5 fw-bold mb-3">校園二手交易平台</h1>
+            <p class="lead mb-4 opacity-75">安全、便利、專屬學生的交易空間，讓好物繼續流轉。</p>
+            <div class="d-flex justify-content-center gap-3">
+                <button class="btn btn-warning btn-lg px-4 shadow-sm" onclick="showModal('postModal')">立即刊登</button>
+                <button class="btn btn-outline-light btn-lg px-4" onclick="document.getElementById('searchInput').focus()">搜尋寶藏</button>
+            </div>
+        </div>
+
+        <!-- 搜尋列 -->
+        <div class="row mb-4">
+            <div class="col-md-6 mx-auto">
+                <div class="input-group shadow-sm">
+                    <select class="form-select" id="searchCategory" style="max-width: 150px; background-color: #f8f9fa;">
+                        <option value="">所有分類</option>
+                        <option value="書籍">書籍</option>
+                        <option value="3C">3C</option>
+                        <option value="生活用品">生活用品</option>
+                        <option value="其他">其他</option>
+                    </select>
+                    <input type="text" id="searchInput" class="form-control" placeholder="搜尋商品...">
+                    <button class="btn btn-primary" onclick="loadItems()">搜尋</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 商品列表 -->
+        <div class="row" id="items-container">
+            <!-- 商品會動態插入這裡 -->
+        </div>
+
+        <!-- 分頁控制 -->
+        <div id="pagination-container" class="mt-5 mb-4"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer text-center">
+        <div class="container">
+            <h5 class="fw-bold mb-2">校園二手交易平台</h5>
+            <p class="text-muted small mb-3">連結校園情感，傳遞物品價值</p>
+            <div class="d-flex justify-content-center gap-3 small">
+                <a href="#" class="text-decoration-none text-secondary">關於我們</a>
+                <a href="#" class="text-decoration-none text-secondary">使用條款</a>
+                <a href="#" class="text-decoration-none text-secondary">聯絡客服</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 登入 Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">登入</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <input type="text" id="loginEmail" class="form-control mb-2" placeholder="Email">
+                    <input type="password" id="loginPass" class="form-control mb-2" placeholder="密碼">
+                    <button class="btn btn-primary w-100" onclick="login()">登入</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 註冊 Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">註冊</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <input type="email" id="regEmail" class="form-control mb-2" placeholder="Email">
+                    <input type="text" id="regNick" class="form-control mb-2" placeholder="暱稱">
+                    <input type="password" id="regPass" class="form-control mb-2" placeholder="密碼">
+                    <button class="btn btn-success w-100" onclick="register()">註冊</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 刊登 Modal -->
+    <div class="modal fade" id="postModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">刊登商品</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <input type="text" id="postTitle" class="form-control mb-2" placeholder="商品名稱">
+                    <input type="number" id="postPrice" class="form-control mb-2" placeholder="價格">
+                    <select id="postCategory" class="form-select mb-2">
+                        <option value="書籍">書籍</option>
+                        <option value="3C">3C</option>
+                        <option value="生活用品">生活用品</option>
+                        <option value="其他">其他</option>
+                    </select>
+                    <textarea id="postDesc" class="form-control mb-2" placeholder="描述"></textarea>
+                    <input type="file" id="postFile" class="form-control mb-2" accept="image/*">
+                    <button class="btn btn-warning w-100" onclick="postItem()">刊登</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 聊天列表 Modal -->
+    <div class="modal fade" id="chatListModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">💬 我的聊天紀錄</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <div class="list-group" id="chat-list-container">
+                        <!-- 聊天列表會動態插入這裡 -->
+                        <p class="text-center text-muted">載入中...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 聊天室 Modal (共用) -->
+    <div class="modal fade" id="chatModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-light"><h5 class="modal-title" id="chatTitle">聊天室</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <div id="chat-box"></div>
+                    <div class="input-group">
+                        <input type="text" id="chatInput" class="form-control" placeholder="輸入訊息..." onkeypress="if(event.key==='Enter') sendMessage()">
+                        <button class="btn btn-primary" onclick="sendMessage()">傳送</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/script.js"></script>
+</body>
+</html>

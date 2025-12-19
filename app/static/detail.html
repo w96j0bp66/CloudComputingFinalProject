@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品詳情 - 校園二手拍</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white mb-4 fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">校園二手拍</a>
+            <div class="d-flex">
+                <a href="/" class="btn btn-outline-secondary">回首頁</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container main-content" style="margin-top: 90px;">
+        <div class="row" id="detail-container" style="display: none;">
+            <div class="col-md-6 mb-4">
+                <div class="detail-img-container">
+                    <img id="detail-img" src="" class="img-fluid w-100" alt="商品圖片">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="detail-info-card h-100">
+                    <span class="badge bg-primary mb-2" id="detail-category"></span>
+                    <span class="badge bg-secondary mb-2 ms-1" id="detail-status" style="display:none;">已售出</span>
+                    <h2 id="detail-title" class="mb-3 fw-bold"></h2>
+                    <h3 class="text-danger mb-4 fw-bold" id="detail-price"></h3>
+                    
+                    <div class="d-flex align-items-center mb-4 p-3 bg-light rounded">
+                        <div class="me-3">
+                            <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-size: 20px;">
+                                <span id="owner-avatar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                                </svg></span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-muted small">賣家</div>
+                            <div class="fw-bold fs-5" id="detail-owner"></div>
+                        </div>
+                        <button id="contact-btn" class="btn btn-outline-primary ms-auto" onclick="openChat()">💬 聯絡賣家</button>
+                    </div>
+
+                    <!-- 賣家專屬操作區 -->
+                    <div id="owner-actions" class="mb-4 p-3 border rounded bg-light" style="display: none;">
+                        <h6 class="fw-bold mb-3">賣家管理</h6>
+                        <button id="btn-toggle-status" class="btn btn-warning me-2" onclick="toggleStatus()">標示為已售出</button>
+                        <button class="btn btn-primary me-2" onclick="openEditModal()">編輯商品</button>
+                        <button class="btn btn-danger" onclick="deleteItem()">刪除商品</button>
+                    </div>
+
+                    <h5 class="card-title border-bottom pb-2 mb-3">商品描述</h5>
+                    <p class="card-text text-secondary" id="detail-desc" style="white-space: pre-wrap; line-height: 1.6;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer text-center mt-5">
+        <div class="container">
+            <h5 class="fw-bold mb-2">校園二手交易平台</h5>
+            <p class="text-muted small mb-3">連結校園情感，傳遞物品價值</p>
+            <div class="d-flex justify-content-center gap-3 small">
+                <a href="#" class="text-decoration-none text-secondary">關於我們</a>
+                <a href="#" class="text-decoration-none text-secondary">使用條款</a>
+                <a href="#" class="text-decoration-none text-secondary">聯絡客服</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 聊天室 Modal -->
+    <div class="modal fade" id="chatModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-light"><h5 class="modal-title">💬 與賣家聊天</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <div id="chat-box"></div>
+                    <div class="input-group">
+                        <input type="text" id="chatInput" class="form-control" placeholder="輸入訊息..." onkeypress="if(event.key==='Enter') sendMessage()">
+                        <button class="btn btn-primary" onclick="sendMessage()">傳送</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 編輯商品 Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">編輯商品</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <input type="text" id="editTitle" class="form-control mb-2" placeholder="商品名稱">
+                    <input type="number" id="editPrice" class="form-control mb-2" placeholder="價格">
+                    <select id="editCategory" class="form-select mb-2">
+                        <option value="書籍">書籍</option>
+                        <option value="3C">3C</option>
+                        <option value="生活用品">生活用品</option>
+                        <option value="其他">其他</option>
+                    </select>
+                    <textarea id="editDesc" class="form-control mb-2" placeholder="描述" rows="4"></textarea>
+                    <button class="btn btn-primary w-100" onclick="submitEdit()">儲存變更</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/detail.js"></script>
+</body>
+</html>

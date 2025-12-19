@@ -1,0 +1,232 @@
+/* 引入 Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Noto+Sans+TC:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+    --primary-color: #1a237e; /* 學院深藍 (Academic Navy) */
+    --primary-hover: #283593;
+    --accent-color: #fbc02d; /* 校園金黃 (Campus Gold) */
+    --bg-color: #f3f4f6;
+    --card-bg: #ffffff;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --radius-md: 12px;
+    --radius-lg: 16px;
+}
+
+body { 
+    background-color: var(--bg-color); 
+    font-family: 'Inter', 'Noto Sans TC', sans-serif; 
+    color: var(--text-main);
+    -webkit-font-smoothing: antialiased;
+    /* Sticky Footer 設定 */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
+.auth-section { display: none; }
+
+h1, h2, h3, h4, h5, .navbar-brand {
+    font-family: 'Merriweather', serif; /* 標題使用襯線體增加學術感 */
+}
+
+/* Navbar 美化 */
+.navbar { 
+    background-color: var(--primary-color) !important;
+    color: white;
+    box-shadow: var(--shadow-sm);
+    padding: 0.8rem 0;
+}
+.navbar-brand { 
+    font-weight: 700; 
+    color: #ffffff !important;
+    font-size: 1.5rem;
+}
+.nav-link, .btn-outline-light {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500;
+}
+.btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    color: white !important;
+}
+.btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: white !important;
+    color: var(--accent-color) !important;
+}
+
+/* 卡片設計 */
+
+.item-card { 
+    border: none; 
+    border-radius: var(--radius-md); 
+    box-shadow: var(--shadow-sm);
+    background: var(--card-bg);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    overflow: hidden;
+}
+.item-card:hover { 
+    transform: translateY(-4px); 
+    box-shadow: var(--shadow-lg); 
+}
+.item-card img { 
+    height: 220px; 
+    object-fit: cover; 
+    transition: transform 0.5s ease;
+}
+.item-card:hover img {
+    transform: scale(1.15);
+}
+.card-body { padding: 1.5rem; }
+.card-title { 
+    font-weight: 600; 
+    color: var(--text-main); 
+    margin-bottom: 0.5rem;
+}
+
+/* 已售出商品樣式 */
+.sold-item { opacity: 0.8; background-color: #f9fafb; }
+.sold-item img { filter: grayscale(100%); }
+.sold-item:hover { transform: none; box-shadow: none; cursor: default; }
+
+/* 詳情頁美化 */
+.detail-img-container { 
+    border-radius: var(--radius-lg); 
+    overflow: hidden; 
+    box-shadow: var(--shadow-md); 
+}
+.detail-info-card { 
+    border: none; 
+    border-radius: var(--radius-lg); 
+    box-shadow: var(--shadow-md); 
+    padding: 2rem; 
+    background: white; 
+}
+
+/* 聊天室樣式 */
+#chat-box {
+    height: 400px;
+    overflow-y: auto;
+    background-color: #f8fafc;
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+.message { 
+    margin-bottom: 12px; 
+    padding: 10px 16px; 
+    border-radius: 18px; 
+    max-width: 75%; 
+    word-wrap: break-word; 
+    font-size: 0.95rem;
+    line-height: 1.5;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.message.self { 
+    background-color: var(--primary-color); 
+    color: white; 
+    margin-left: auto; 
+    border-bottom-right-radius: 4px; 
+}
+.message.other { 
+    background-color: white; 
+    color: var(--text-main); 
+    margin-right: auto; 
+    border-bottom-left-radius: 4px; 
+}
+.message-sender { font-size: 0.75rem; margin-bottom: 4px; color: var(--text-muted); font-weight: 500; }
+.self .message-sender { text-align: right; color: #e0e7ff; }
+
+/* 按鈕與輸入框優化 */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 500;
+}
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+.btn-warning {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #1a237e;
+    font-weight: 600;
+}
+.form-control, .form-select {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border-color: #d1d5db;
+}
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+.modal-content {
+    border: none;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+.modal-header { border-bottom: 1px solid #f3f4f6; padding: 1.5rem; }
+.modal-body { padding: 1.5rem; }
+
+/* 分頁按鈕樣式 */
+.page-link {
+    color: var(--primary-color);
+    border: none;
+    margin: 0 5px;
+    border-radius: 8px !important;
+}
+.page-link:hover {
+    background-color: #e8eaf6;
+    color: var(--primary-hover);
+}
+.page-item.disabled .page-link {
+    background-color: transparent;
+    color: var(--text-muted);
+}
+
+/* --- 新增：Hero Banner (首頁橫幅) --- */
+.hero-banner {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #283593 100%);
+    color: white;
+    padding: 4rem 2rem;
+    border-radius: var(--radius-lg);
+    margin-bottom: 3rem;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* 加入一點背景紋理讓它不那麼單調 */
+.hero-banner::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.1) 0%, transparent 20%), radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 20%);
+    pointer-events: none;
+}
+
+/* --- 新增：Footer (頁尾) --- */
+.main-footer {
+    background-color: white;
+    border-top: 1px solid #e5e7eb;
+    padding: 2rem 0;
+    margin-top: auto; /* 自動推到最底部 */
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* 讓主要內容區塊自動填滿剩餘空間 */
+.container.main-content {
+    flex: 1;
+}

@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+
+# Environment Variables
+.env
+
+# Docker Volumes (Database Data)
+db_data/
+
+# IDE Settings
+.vscode/
+.idea/
+
+# User Uploads 
+app/static/images/*
+# !app/static/images/.gitkeep
