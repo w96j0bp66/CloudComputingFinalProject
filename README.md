@@ -51,7 +51,7 @@
 1.  **複製專案**
     ```bash
     git clone https://github.com/w96j0bp66/CloudComputingFinalProject.git
-    cd campus-market
+    cd CloudComputingFinalProject
     ```
 
 2.  **設定環境變數**
